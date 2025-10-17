@@ -17,8 +17,8 @@ BOT_TOKEN = getenv("BOT_TOKEN")
 MONGO_DB_URI = getenv("MONGO_DB_URI", None)
 
 # Vars For API End Pont.
-YTPROXY_URL = getenv("YTPROXY_URL", 'https://www.googleapis.com/youtube/v3/search?part=snippet&q=lofi&key=AIzaSyDNLaLjVAwyngvw46_1V7sA5YA4vg3whHg') ## xBit Music Endpoint.
-YT_API_KEY = getenv("YT_API_KEY" ,  'AIzaSyDNLaLjVAwyngvw46_1V7sA5YA4vg3whHg') ## Your API key like: xbit_10000000xx0233 Get from  https://t.me/tgmusic_apibot
+YTPROXY_URL = getenv("YTPROXY_URL", 'https://www.googleapis.com/youtube/v3/search?part=snippet&q=lofi&key=AIzaSyDzA2MiCWALQ-mjaQ3QQDj6Oa1enbMiYS4') ## xBit Music Endpoint.
+YT_API_KEY = getenv("YT_API_KEY" ,  'xbit_AIzaSyDzA2MiCWALQ-mjaQ3QQDj6Oa1enbMiYS4') ## Your API key like: xbit_10000000xx0233 Get from  https://t.me/tgmusic_apibot
 
 ## Other vaes
 DURATION_LIMIT_MIN = int(getenv("DURATION_LIMIT", 300))

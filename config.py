@@ -17,7 +17,7 @@ BOT_TOKEN = getenv("BOT_TOKEN")
 MONGO_DB_URI = getenv("MONGO_DB_URI", None)
 
 # Vars For API End Pont.
-YTPROXY_URL = getenv("YTPROXY_URL", 'https://tgapi.xbitcode.com') ## xBit Music Endpoint.
+YTPROXY_URL = getenv("YTPROXY_URL", 'https://www.googleapis.com/youtube/v3/search?part=snippet&q=lofi&key=AIzaSyDNLaLjVAwyngvw46_1V7sA5YA4vg3whHg') ## xBit Music Endpoint.
 YT_API_KEY = getenv("YT_API_KEY" ,  "AIzaSyDNLaLjVAwyngvw46_1V7sA5YA4vg3whHg") ## Your API key like: xbit_10000000xx0233 Get from  https://t.me/tgmusic_apibot
 
 ## Other vaes

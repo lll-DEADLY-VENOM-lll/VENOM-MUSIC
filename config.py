@@ -1,5 +1,3 @@
-# --- START OF FIXED config.py FILE ---
-
 import re
 from os import getenv
 
@@ -27,7 +25,7 @@ MONGO_DB_URI = getenv("MONGO_DB_URI", None)
 
 # This new line is for your Google API Key.
 # You must set this variable in your .env file or your server's environment variables.
-YOUTUBE_API_KEY = getenv("YOUTUBE_API_KEY", None)
+YOUTUBE_API_KEY = getenv("YOUTUBE_API_KEY", "")
 
 # --------------------------------- #
 #  END OF CHANGES                   #

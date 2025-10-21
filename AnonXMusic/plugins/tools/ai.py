@@ -11,7 +11,7 @@ from pyrogram.errors import FloodWait
 from AnonXMusic import app ## make sure you use your own repo module name 
 from AnonXMusic.utils.database import get_model_settings
 from config import BANNED_USERS
-from config import YT_API_KEY as AI_KEY 
+from config import YOUTUBE_API_KEY as AI_KEY 
 from config import YTPROXY_URL as AI_ENDPOINT
 import random
 import logging

@@ -1,3 +1,5 @@
+--- START OF FILE call.py ---
+
 import asyncio
 import os
 from datetime import datetime, timedelta
@@ -36,7 +38,7 @@ from AnonXMusic.utils.formatters import check_duration, seconds_to_min, speed_co
 from AnonXMusic.utils.inline.play import stream_markup
 from AnonXMusic.utils.thumbnails import get_thumb
 from strings import get_string
-from AnonXMusic.platforms.Youtube import cookie_txt_file
+# from AnonXMusic.platforms.Youtube import cookie_txt_file # <--- YEH LINE HATA DI GAYI HAI
 
 autoend = {}
 counter = {}

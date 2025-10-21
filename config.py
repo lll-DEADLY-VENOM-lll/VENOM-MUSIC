@@ -1,3 +1,5 @@
+# --- START OF FIXED config.py FILE ---
+
 import re
 from os import getenv
 
@@ -16,11 +18,22 @@ BOT_TOKEN = getenv("BOT_TOKEN")
 # Get your mongo url from cloud.mongodb.com
 MONGO_DB_URI = getenv("MONGO_DB_URI", None)
 
-# Vars For API End Pont.
-YTPROXY_URL = getenv("YTPROXY_URL", 'https://www.googleapis.com/youtube/v3/search?part=snippet&q=lofi&key=AIzaSyDzA2MiCWALQ-mjaQ3QQDj6Oa1enbMiYS4') ## xBit Music Endpoint.
-YT_API_KEY = getenv("YT_API_KEY" ,  'AIzaSyDzA2MiCWALQ-mjaQ3QQDj6Oa1enbMiYS4') ## Your API key like: xbit_10000000xx0233 Get from  https://t.me/tgmusic_apibot
+# --------------------------------- #
+#  CHANGES ARE IN THIS SECTION      #
+# --------------------------------- #
 
-## Other vaes
+# The old proxy variables (YTPROXY_URL and YT_API_KEY) have been removed
+# as they are no longer needed by the new Youtube.py file.
+
+# This new line is for your Google API Key.
+# You must set this variable in your .env file or your server's environment variables.
+YOUTUBE_API_KEY = getenv("YOUTUBE_API_KEY", None)
+
+# --------------------------------- #
+#  END OF CHANGES                   #
+# --------------------------------- #
+
+## Other vars
 DURATION_LIMIT_MIN = int(getenv("DURATION_LIMIT", 300))
 
 # Chat id of a group for logging bot's activities

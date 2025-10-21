@@ -11,20 +11,30 @@ logger = LOGGER(__name__)
 
 class YouTubeAPI:
     def __init__(self):
-        self.base_video_url = "https://www.googleapis.com/youtube/v3/videos"
-        self.base_search_url = "https://www.googleapis.com/youtube/v3/search"
+        self.search_url = "https://www.googleapis.com/youtube/v3/search"
+        self.videos_url = "https://www.googleapis.com/youtube/v3/videos"
         self.regex = r"(?:youtube\.com|youtu\.be)"
 
+    # -------------------------------
+    # 🔹 Helper: Fetch JSON
+    # -------------------------------
     async def _fetch_json(self, url: str, params: dict):
-        """Helper to make async API requests"""
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url, params=params) as response:
-                return await response.json()
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url, params=params) as response:
+                    data = await response.json()
+                    return data
+        except Exception as e:
+            logger.error(f"Network error: {e}")
+            return {}
 
+    # -------------------------------
+    # 🔹 Search / Get Video Info
+    # -------------------------------
     async def _get_video_details(self, query: str, limit: int = 5) -> Union[dict, None]:
-        """Search videos using Google Cloud YouTube Data API"""
+        """Search for YouTube videos using Google Cloud YouTube Data API"""
         if not YT_API_KEY:
-            logger.error("YT_API_KEY not set in config file.")
+            logger.error("❌ Missing YT_API_KEY in config file.")
             return None
 
         params = {
@@ -35,26 +45,28 @@ class YouTubeAPI:
             "key": YT_API_KEY,
         }
 
-        data = await self._fetch_json(self.base_search_url, params)
+        data = await self._fetch_json(self.search_url, params)
 
         if "items" not in data or not data["items"]:
-            logger.error(f"No search results found for {query}")
+            logger.error(f"No results found for query: {query}")
             return None
 
-        # First result
+        # Pick first video
         item = data["items"][0]
         vid_id = item["id"]["videoId"]
         title = item["snippet"]["title"]
-        thumbnail = item["snippet"]["thumbnails"]["high"]["url"]
         channel = item["snippet"]["channelTitle"]
+        thumbnail = item["snippet"]["thumbnails"]["high"]["url"]
+        video_link = f"https://www.youtube.com/watch?v={vid_id}"
 
-        # Fetch duration via videos.list
+        # Fetch duration info
         dur_params = {
             "part": "contentDetails",
             "id": vid_id,
             "key": YT_API_KEY
         }
-        dur_data = await self._fetch_json(self.base_video_url, dur_params)
+        dur_data = await self._fetch_json(self.videos_url, dur_params)
+
         duration = "0:00"
         try:
             iso_duration = dur_data["items"][0]["contentDetails"]["duration"]
@@ -68,11 +80,14 @@ class YouTubeAPI:
             "channel": channel,
             "duration": duration,
             "thumbnails": [{"url": thumbnail}],
-            "link": f"https://www.youtube.com/watch?v={vid_id}",
+            "link": video_link,
         }
 
+    # -------------------------------
+    # 🔹 Duration Parser
+    # -------------------------------
     def _parse_duration(self, iso_duration):
-        """Convert ISO8601 duration (PT4M30S) -> MM:SS"""
+        """Convert ISO8601 duration (PT4M30S) to MM:SS"""
         pattern = re.compile(r"PT(?:(\d+)M)?(?:(\d+)S)?")
         match = pattern.match(iso_duration)
         if not match:
@@ -81,15 +96,21 @@ class YouTubeAPI:
         seconds = int(match.group(2) or 0)
         return f"{minutes}:{seconds:02d}"
 
+    # -------------------------------
+    # 🔹 Utility: Check YouTube Link
+    # -------------------------------
     async def exists(self, link: str):
-        """Check if link is valid YouTube"""
+        """Check if link belongs to YouTube"""
         return bool(re.search(self.regex, link))
 
-    async def details(self, link_or_query: str):
+    # -------------------------------
+    # 🔹 Core Methods
+    # -------------------------------
+    async def details(self, query: str):
         """Return title, duration, thumbnail, and video ID"""
-        result = await self._get_video_details(link_or_query)
+        result = await self._get_video_details(query)
         if not result:
-            raise ValueError("No suitable video found.")
+            raise ValueError("No video found.")
 
         title = result["title"]
         duration_min = result["duration"]
@@ -105,25 +126,41 @@ class YouTubeAPI:
             raise ValueError("Video not found.")
         return result["title"]
 
+    async def duration(self, query: str):
+        result = await self._get_video_details(query)
+        if not result:
+            raise ValueError("Video not found.")
+        return result["duration"]
+
     async def thumbnail(self, query: str):
         result = await self._get_video_details(query)
         if not result:
             raise ValueError("Video not found.")
         return result["thumbnails"][0]["url"]
 
-    async def video_url(self, query: str):
+    async def track(self, query: str):
+        """Return a full video info dict"""
         result = await self._get_video_details(query)
         if not result:
             raise ValueError("Video not found.")
-        return result["link"]
+
+        return {
+            "title": result["title"],
+            "link": result["link"],
+            "vidid": result["id"],
+            "duration_min": result["duration"],
+            "thumb": result["thumbnails"][0]["url"],
+            "channel": result["channel"]
+        }, result["id"]
 
 # -------------------------------
-# 🔹 Test Example
+# 🔹 Example Test (Run Directly)
 # -------------------------------
 async def main():
     yt = YouTubeAPI()
-    result = await yt.details("Arijit Singh Tum Hi Ho")
-    print(result)
+    print("🔍 Searching 'Arijit Singh Tum Hi Ho' ...")
+    title, dur, sec, thumb, vid = await yt.details("Arijit Singh Tum Hi Ho")
+    print(f"\n🎵 Title: {title}\n🕒 Duration: {dur}\n🖼️ Thumbnail: {thumb}\n📺 ID: {vid}")
 
 if __name__ == "__main__":
     asyncio.run(main())

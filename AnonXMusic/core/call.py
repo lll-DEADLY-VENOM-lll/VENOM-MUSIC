@@ -1,5 +1,3 @@
---- START OF FILE call.py ---
-
 import asyncio
 import os
 from datetime import datetime, timedelta

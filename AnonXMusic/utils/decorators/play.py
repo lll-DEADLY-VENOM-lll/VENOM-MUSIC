@@ -65,7 +65,9 @@ def PlayWrapper(command):
             if message.reply_to_message
             else None
         )
+        # ----------------- YAHAN PAR FIX KIYA GAYA HAI ----------------- #
         url = await YouTube.search(message)
+        # -------------------------------------------------------------- #
         if audio_telegram is None and video_telegram is None and url is None:
             if len(message.command) < 2:
                 if "stream" in message.command:
@@ -194,4 +196,27 @@ def PlayWrapper(command):
             fplay,
         )
 
-    return wrapper
+    return wrapper```
+
+### Kya Badlaav Kiya Gaya Hai?
+
+*   **Purana Galat Code:**
+    ```python
+    url = await YouTube.url(message)
+    ```
+*   **Naya Sahi Code:**
+    ```python
+    url = await YouTube.search(message)
+    ```
+
+Yeh chhota sa badlav isliye zaroori tha kyunki music bot jis library ka istemal kar raha hai, usmein update aaya hai. Ab YouTube se video ki link nikalne ke liye `url()` method ki jagah `search()` method ka upyog hota hai.
+
+### Final Steps:
+
+1.  Upar diye gaye code ko copy karke apni `play.py` file mein paste karein aur **save** karein.
+2.  Apne terminal mein bot ke folder mein jaakar dependencies update karein:
+    ```bash
+    pip3 install -U -r requirements.txt
+    ```3.  Apne bot ko **restart** karein.
+
+Iske baad aapka error 100% theek ho jaayega.

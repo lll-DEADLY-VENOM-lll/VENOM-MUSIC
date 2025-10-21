@@ -7,8 +7,8 @@ from pyrogram import filters
 load_dotenv()
 
 # Get this value from my.telegram.org/apps
-API_ID = int(getenv("API_ID"))
-API_HASH = getenv("API_HASH")
+API_ID = int(getenv("API_ID", "12398605"))
+API_HASH = getenv("API_HASH", "0233c5b5cc8e6657d658cac2602cd630")
 
 # Get your token from @BotFather on Telegram.
 BOT_TOKEN = getenv("BOT_TOKEN")
@@ -18,16 +18,16 @@ MONGO_DB_URI = getenv("MONGO_DB_URI", None)
 
 # Vars For API End Pont.
 YTPROXY_URL = getenv("YTPROXY_URL", 'https://www.googleapis.com/youtube/v3/search?part=snippet&q=lofi&key=AIzaSyDzA2MiCWALQ-mjaQ3QQDj6Oa1enbMiYS4') ## xBit Music Endpoint.
-YT_API_KEY = getenv("YT_API_KEY" ,  'xbit_AIzaSyDzA2MiCWALQ-mjaQ3QQDj6Oa1enbMiYS4') ## Your API key like: xbit_10000000xx0233 Get from  https://t.me/tgmusic_apibot
+YT_API_KEY = getenv("YT_API_KEY" ,  'AIzaSyDzA2MiCWALQ-mjaQ3QQDj6Oa1enbMiYS4') ## Your API key like: xbit_10000000xx0233 Get from  https://t.me/tgmusic_apibot
 
 ## Other vaes
 DURATION_LIMIT_MIN = int(getenv("DURATION_LIMIT", 300))
 
 # Chat id of a group for logging bot's activities
-LOGGER_ID = int(getenv("LOGGER_ID"))
+LOGGER_ID = int(getenv("LOGGER_ID", "-1003034048678"))
 
 # Get this value from @FallenxBot on Telegram by /id
-OWNER_ID = int(getenv("OWNER_ID"))
+OWNER_ID = int(getenv("OWNER_ID", "8282223204"))
 
 ## Fill these variables if you're deploying on heroku.
 # Your heroku app name
